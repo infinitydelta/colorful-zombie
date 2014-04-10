@@ -39,7 +39,7 @@ public class Projectile : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D other) {
 		
 		//moving = false;
-		float deathtime = 0.02f;
+		float deathtime = 0;
 		//if wall
 		if (other.gameObject.CompareTag("wall")) {
 			Instantiate(boom, other.contacts[0].point, other.transform.rotation);
@@ -49,6 +49,7 @@ public class Projectile : MonoBehaviour {
 			deathtime = Random.Range(-.5f, .1f);
 			if (deathtime < 0.02f) deathtime = 0.02f;
 		}
+		
 		//deathtime = 0;
 		//moving = false;
 		//rigidbody2D.velocity = Vector2.zero;

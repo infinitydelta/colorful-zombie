@@ -15,14 +15,23 @@ public class Player : MonoBehaviour {
 	public int rotationSpeed = 15;
 	public float friction = .9f;
 	
+	Collider2D[] enemiesInRange;
+	
 	// Use this for initialization
 	void Start () {
-	
+		enemiesInRange = Physics2D.OverlapCircleAll(transform.position, 5);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		faceDirection(directionInt);
+//		int i = 0;
+//		while (i < enemiesInRange.Length) {
+//			print (i);
+//			i++;
+//			//enemiesInRange[i]
+//		}
+
 	}
 	
 	void FixedUpdate() {
