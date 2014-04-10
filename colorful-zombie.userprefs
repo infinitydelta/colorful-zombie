@@ -1,8 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\..\Programming\Unity Projects\asteroids 2\Assets\Broken.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\zombie.cs">
     <Files>
-      <File FileName="..\..\..\Programming\Unity Projects\asteroids 2\Assets\Broken.cs" Line="17" Column="40" />
+      <File FileName="Assets\Scripts\zombie.cs" Line="59" Column="41" />
+      <File FileName="Assets\Scripts\Player.cs" Line="28" Column="15" />
+      <File FileName="Assets\Scripts\Weapon.cs" Line="77" Column="37" />
+      <File FileName="Assets\Scripts\Projectile.cs" Line="69" Column="1" />
+      <File FileName="d:\GitHub\colorful-zombie\Assets\AstarPathfindingProject\Core\AI\Seeker.cs" Line="412" Column="57" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

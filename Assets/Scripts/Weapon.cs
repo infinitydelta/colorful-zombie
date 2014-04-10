@@ -4,6 +4,7 @@ using System.Collections;
 public class Weapon : MonoBehaviour {
 
 	public GameObject projectile;
+	public float damage = 10;
 	public float cooldown = 1f;
 	public float accuracy = 5;
 	public float recoil = 1;
@@ -12,6 +13,9 @@ public class Weapon : MonoBehaviour {
 	public float recoilRecoverySpeed = .3f;
 	public float cameraRecoil = 25f;
 	public int numProjectiles = 20;
+	public int knockback = 1;
+	public int noise = 7;
+	public bool fullauto = true;
 	float spread;
 	bool canShoot = true;
 	float timer;
@@ -46,9 +50,20 @@ public class Weapon : MonoBehaviour {
 	}
 	
 	void weaponControl() {
-		if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) {
-			shoot ();
-		} 
+		if(fullauto)
+		{
+			if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) 
+			{
+				shoot ();
+			} 
+		}
+		else
+		{
+			if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+			{
+				shoot();
+			}
+		}
 	
 	}
 	
@@ -57,7 +72,9 @@ public class Weapon : MonoBehaviour {
 			Vector3 position = new Vector3(transform.position.x,transform.position.y,transform.position.z +1);
 			for (int i = 0; i< numProjectiles;i++ ) {
 				Quaternion rotation = transform.rotation * Quaternion.Euler(0,0,Random.Range(-spread,spread));
-				Instantiate (projectile, position, rotation);
+				GameObject proj = (GameObject)(Instantiate (projectile, position, rotation));
+				proj.rigidbody2D.mass = knockback;
+				proj.GetComponent<Projectile>().setDamage(damage);
 			}
 			float r = 5;
 			Vector3 endpoint = new Vector3(r*Mathf.Cos((transform.rotation.eulerAngles.z + 90)* Mathf.Deg2Rad), r*Mathf.Sin((transform.rotation.eulerAngles.z + 90) * Mathf.Deg2Rad), 0);
@@ -66,7 +83,7 @@ public class Weapon : MonoBehaviour {
 			
 			Camera.main.transform.Translate(Random.insideUnitCircle * cameraRecoil * Time.deltaTime,0);
 			
-			if (hit) print ("shoot: " + hit.collider.gameObject);
+			//if (hit) print ("shoot: " + hit.collider.gameObject);
 			
 			//Debug.DrawRay(transform.position , endpoint, Color.red);
 			//vel = new Vector2(-Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad) * speed, speed *Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad));
@@ -78,6 +95,16 @@ public class Weapon : MonoBehaviour {
 			if (spread < maxRecoil) {
 				spread += recoil;
 			}
+
+			Collider2D[] inRange = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y), noise);
+			foreach(Collider2D col2d in inRange)
+			{
+				if(col2d.CompareTag("enemy"))
+				{
+					col2d.gameObject.GetComponent<zombie>().setTargetLoc(this.transform.position);
+				}
+			}
+
 			canShoot = false;
 			timer = 0;
 		}

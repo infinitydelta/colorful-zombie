@@ -5,23 +5,26 @@ using Pathfinding;
 public class zombie : MonoBehaviour {
 
 	public GameObject target;
-	public float maxSpeed = 1f;
+	public float maxSpeed;
 	float detectableRange = 20;
 
 	Path path;
 	Seeker seeker;
 	int currentWayPoint;
-	float rotationSpeed = 1f;
-	
+	public float rotationSpeed = 1f;
+
+	public float health = 100;
 	
 
 	Vector3 targetLoc;
-	
 	bool moving = false;
+	bool alive = true;
 	// Use this for initialization
 	void Start () {
 		seeker = GetComponent<Seeker>();
+		targetLoc = this.transform.position;
 		//seeker.StartPath(transform.position, target.transform.position, OnPathComplete); //set path to target
+
 		
 	}
 	
@@ -39,18 +42,21 @@ public class zombie : MonoBehaviour {
 		
 		//transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
 		//print (rigidbody2D.velocity.magnitude);
-		
+
+
+	}
+	
+	void FixedUpdate() 
+	{
 		moving = false;
-		if (rigidbody2D.velocity.magnitude > maxSpeed) {
-			rigidbody2D.velocity = Vector2.ClampMagnitude(rigidbody2D.velocity, maxSpeed);
-		}
+		//Debug.Log(rigidbody2D.velocity);
 		
-//		if (Vector2.Distance(target.transform.position, transform.position) <= 1) {
-//			rigidbody2D.velocity = Vector2.zero;
-//		}
+		//		if (Vector2.Distance(target.transform.position, transform.position) <= 1) {
+		//			rigidbody2D.velocity = Vector2.zero;
+		//		}
 		int layerMask = 1 << 10;
 		layerMask = ~layerMask;
-		if (inDetectableRange(target)) {
+		if (inDetectableRange(target) && alive) {
 			RaycastHit2D hit = Physics2D.Raycast(transform.position + (target.transform.position - transform.position).normalized, target.transform.position - transform.position, detectableRange, layerMask);
 			//print (hit.collider.gameObject);
 			Debug.DrawRay(transform.position, target.transform.position - transform.position);
@@ -59,12 +65,11 @@ public class zombie : MonoBehaviour {
 			Vector2 dir = (new Vector2(Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad)).normalized);
 			if ((Vector2.Angle(target.transform.position - transform.position , dir)) <= 90 ) {
 				if (hit.collider.gameObject.CompareTag("Player")) {
-				
-				targetLoc = target.transform.position;
-;
+					
+					targetLoc = target.transform.position;
 				}
 				else {
-
+					
 					//InvokeRepeating("findPath",10,10);
 				}
 			}
@@ -72,14 +77,14 @@ public class zombie : MonoBehaviour {
 			
 		}
 		if (!moving) {
-			rigidbody2D.velocity *= .9f;
+			rigidbody2D.velocity *= .1f;
 		}
 		//print (moving);
-
-	}
-	
-	void FixedUpdate() {
 		
+		if (rigidbody2D.velocity.magnitude > maxSpeed) 
+		{
+			rigidbody2D.velocity = Vector2.ClampMagnitude(rigidbody2D.velocity, maxSpeed);
+		}
 	
 	}
 	
@@ -117,12 +122,35 @@ public class zombie : MonoBehaviour {
 	void attackTarget(Vector3 target) {
 		moving = true;
 		faceDirection(target);
-		if (Vector2.Distance(target, transform.position) > 1.2f) {
-			rigidbody2D.AddForce((target - transform.position).normalized * 300);
+		if (Vector2.Distance(target, transform.position) > .10f) {
+			rigidbody2D.AddForce((target - transform.position).normalized * 4000);
 		}
 	}
 	
 	void findPath() {
 		seeker.StartPath(transform.position, target.transform.position, OnPathComplete); //set path to target
+	}
+	public void setTargetLoc(Vector3 newtarget)
+	{
+		targetLoc = newtarget;
+	}
+	void idle()
+	{
+		if(rigidbody2D.velocity.magnitude < .11f)
+		{
+			float _x = Random.Range(-1f, 1f);
+			float _y = Random.Range(-1f, 1f);
+			targetLoc = new Vector3(transform.position.x + _x, transform.position.y + _y, transform.position.z);
+		}
+	}
+	public void damage(float dmg)
+	{
+		health -= dmg;
+		if(health <= 0)
+		{
+			alive = false;
+			this.rigidbody2D.mass = .001f;
+			this.rigidbody2D.drag = 0;
+		}
 	}
 }

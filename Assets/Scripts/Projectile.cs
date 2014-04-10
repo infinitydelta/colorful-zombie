@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour {
 	bool moving = true;
 	RaycastHit2D hit ;
 	Vector3 fuck= new Vector3 (0,0,0);
+	float damage;
 	
 	// Use this for initialization
 	void Start () {
@@ -49,11 +50,19 @@ public class Projectile : MonoBehaviour {
 			deathtime = Random.Range(-.5f, .1f);
 			if (deathtime < 0.02f) deathtime = 0.02f;
 		}
+		else if(other.gameObject.CompareTag("enemy"))
+		{
+			other.gameObject.GetComponent<zombie>().damage(damage);
+		}
 		
 		//deathtime = 0;
 		//moving = false;
 		//rigidbody2D.velocity = Vector2.zero;
 		
 		Destroy(this.gameObject, deathtime);
+	}
+	public void setDamage(float dmg)
+	{
+		damage = dmg;
 	}
 }
