@@ -53,6 +53,7 @@ public class Projectile : MonoBehaviour {
 		else if(other.gameObject.CompareTag("enemy"))
 		{
 			other.gameObject.GetComponent<zombie>().damage(damage);
+			//other.gameObject.rigidbody2D.velocity = rigidbody2D.velocity * .5f;
 		}
 		
 		//deathtime = 0;

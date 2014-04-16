@@ -29,7 +29,8 @@ public class zombie : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	//void Update () {
+		
 		/*
 		//seeker.StartPath(transform.position, target.transform.position, OnPathComplete); //set path to target
 
@@ -44,9 +45,9 @@ public class zombie : MonoBehaviour {
 		//print (rigidbody2D.velocity.magnitude);
 
 
-	}
+	//}
 	
-	void FixedUpdate() 
+	void Update() 
 	{
 		moving = false;
 		//Debug.Log(rigidbody2D.velocity);
@@ -77,7 +78,7 @@ public class zombie : MonoBehaviour {
 			
 		}
 		if (!moving) {
-			rigidbody2D.velocity *= .1f;
+			//rigidbody2D.velocity *= .9f;
 		}
 		//print (moving);
 		
@@ -122,8 +123,8 @@ public class zombie : MonoBehaviour {
 	void attackTarget(Vector3 target) {
 		moving = true;
 		faceDirection(target);
-		if (Vector2.Distance(target, transform.position) > .10f) {
-			rigidbody2D.AddForce((target - transform.position).normalized * 4000);
+		if (Vector2.Distance(target, transform.position) > .10f && rigidbody2D.velocity.magnitude < maxSpeed) {
+			rigidbody2D.AddForce((target - transform.position).normalized * 100);
 		}
 	}
 	
@@ -134,23 +135,27 @@ public class zombie : MonoBehaviour {
 	{
 		targetLoc = newtarget;
 	}
-	void idle()
-	{
-		if(rigidbody2D.velocity.magnitude < .11f)
-		{
-			float _x = Random.Range(-1f, 1f);
-			float _y = Random.Range(-1f, 1f);
-			targetLoc = new Vector3(transform.position.x + _x, transform.position.y + _y, transform.position.z);
-		}
-	}
+
 	public void damage(float dmg)
 	{
 		health -= dmg;
 		if(health <= 0)
 		{
 			alive = false;
-			this.rigidbody2D.mass = .001f;
-			this.rigidbody2D.drag = 0;
+			rigidbody2D.mass = 5f;
+			//rigidbody2D.drag = .01f;
+			rigidbody2D.AddTorque(Random.Range(-900f, 900f));
+			//rigidbody2D.isKinematic = true;
+			//this.rigidbody2D.drag = 0;
+			print (rigidbody2D.velocity);
+			StartCoroutine( die() );
+			
 		}
+	}
+	public IEnumerator die()
+	{
+		yield return new WaitForSeconds(.5f);
+		rigidbody2D.isKinematic = true;
+		this.GetComponent<CircleCollider2D>().enabled = false;
 	}
 }
