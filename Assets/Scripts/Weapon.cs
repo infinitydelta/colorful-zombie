@@ -16,6 +16,7 @@ public class Weapon : MonoBehaviour {
 	public int knockback = 1;
 	public int noise = 7;
 	public bool fullauto = true;
+	private bool fired;
 	float spread;
 	bool canShoot = true;
 	float timer;
@@ -33,6 +34,10 @@ public class Weapon : MonoBehaviour {
 		float r = 5;
 		Vector3 endpoint = new Vector3(r*Mathf.Cos((transform.rotation.eulerAngles.z + 90)* Mathf.Deg2Rad), r*Mathf.Sin((transform.rotation.eulerAngles.z + 90) * Mathf.Deg2Rad), 0);
 		Debug.DrawRay(transform.position + endpoint.normalized*.1f, endpoint );
+		if(fired && Input.GetAxis("Fire1") == 0)
+		{
+			fired = false;
+		}
 //		print (spread);
 	}
 	
@@ -52,16 +57,20 @@ public class Weapon : MonoBehaviour {
 	void weaponControl() {
 		if(fullauto)
 		{
-			if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) 
+			if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0) || Input.GetAxis("Fire1") > 0) 
 			{
 				shoot ();
 			} 
 		}
 		else
 		{
-			if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+			if(Input.GetAxis("Fire1") > 0)
 			{
-				shoot();
+				if(!fired)
+				{
+					fired = true;
+					shoot();
+				}
 			}
 		}
 	

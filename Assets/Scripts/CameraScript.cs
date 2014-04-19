@@ -7,7 +7,8 @@ public class CameraScript : MonoBehaviour {
 	public float movePredictionStr = .2f;
 	public int mouseStr = 5;
 	public float smoothing = 5f * 2;
-	
+
+	float multiplier = 20f;
 	float cameraRecoil = 25f;
 	float gunRecoil;
 	// Use this for initialization
@@ -26,7 +27,9 @@ public class CameraScript : MonoBehaviour {
 	
 	void FixedUpdate() {
 	
-		Vector3 moz = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		//Vector3 moz = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+		Vector3 moz = new Vector3(player.transform.position.x + (Input.GetAxis("AimX") * multiplier), player.transform.position.y + (Input.GetAxis("AimY") * multiplier), 0);
 
 		transform.Translate ( (player.transform.position.x + player.rigidbody2D.velocity.x * movePredictionStr - transform.position.x + (moz.x - player.transform.position.x )/mouseStr) /smoothing, 	(player.transform.position.y + player.rigidbody2D.velocity.y * movePredictionStr - transform.position.y + (moz.y - player.transform.position.y)/mouseStr) /smoothing, 0);
 

@@ -13,6 +13,7 @@ public class zombie : MonoBehaviour {
 	int currentWayPoint;
 	public float rotationSpeed = 1f;
 
+	Animator anim;
 	public float health = 100;
 	
 
@@ -23,6 +24,7 @@ public class zombie : MonoBehaviour {
 	void Start () {
 		seeker = GetComponent<Seeker>();
 		targetLoc = this.transform.position;
+		anim = GetComponent<Animator>();
 		//seeker.StartPath(transform.position, target.transform.position, OnPathComplete); //set path to target
 
 		
@@ -47,7 +49,7 @@ public class zombie : MonoBehaviour {
 
 	//}
 	
-	void Update() 
+	void FixedUpdate() 
 	{
 		moving = false;
 		//Debug.Log(rigidbody2D.velocity);
@@ -82,10 +84,10 @@ public class zombie : MonoBehaviour {
 		}
 		//print (moving);
 		
-		if (rigidbody2D.velocity.magnitude > maxSpeed) 
+		/*if (rigidbody2D.velocity.magnitude > maxSpeed) 
 		{
 			rigidbody2D.velocity = Vector2.ClampMagnitude(rigidbody2D.velocity, maxSpeed);
-		}
+		}*/
 	
 	}
 	
@@ -124,7 +126,7 @@ public class zombie : MonoBehaviour {
 		moving = true;
 		faceDirection(target);
 		if (Vector2.Distance(target, transform.position) > .10f && rigidbody2D.velocity.magnitude < maxSpeed) {
-			rigidbody2D.AddForce((target - transform.position).normalized * 100);
+			rigidbody2D.AddForce((target - transform.position).normalized * 3000);
 		}
 	}
 	
@@ -142,12 +144,12 @@ public class zombie : MonoBehaviour {
 		if(health <= 0)
 		{
 			alive = false;
-			rigidbody2D.mass = 5f;
+			rigidbody2D.mass = 1f;
 			//rigidbody2D.drag = .01f;
 			rigidbody2D.AddTorque(Random.Range(-900f, 900f));
-			//rigidbody2D.isKinematic = true;
-			//this.rigidbody2D.drag = 0;
-			print (rigidbody2D.velocity);
+			rigidbody2D.isKinematic = true;
+			this.rigidbody2D.drag = 0;
+			//print (rigidbody2D.velocity);
 			StartCoroutine( die() );
 			
 		}
@@ -157,5 +159,8 @@ public class zombie : MonoBehaviour {
 		yield return new WaitForSeconds(.5f);
 		rigidbody2D.isKinematic = true;
 		this.GetComponent<CircleCollider2D>().enabled = false;
+		anim.SetTrigger("dead");
+		Destroy(this.gameObject, 1.5f);
+
 	}
 }

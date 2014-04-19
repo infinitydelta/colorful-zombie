@@ -4,6 +4,7 @@ using System.Collections;
 public class Projectile : MonoBehaviour {
 	public float speed = 10;
 	public GameObject boom;
+	public GameObject blood;
 	
 	Vector2 vel;
 	bool moving = true;
@@ -53,6 +54,7 @@ public class Projectile : MonoBehaviour {
 		else if(other.gameObject.CompareTag("enemy"))
 		{
 			other.gameObject.GetComponent<zombie>().damage(damage);
+			Instantiate(blood, other.contacts[0].point, this.transform.rotation);
 			//other.gameObject.rigidbody2D.velocity = rigidbody2D.velocity * .5f;
 		}
 		

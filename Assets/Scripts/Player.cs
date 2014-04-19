@@ -5,6 +5,8 @@ public class Player : MonoBehaviour {
 	float diag = Mathf.Sqrt(2);
 	bool movingX = false;
 	bool movingY = false;
+	bool moving;
+	float cos = 0f;
 	Vector2 direction = new Vector2(0,0);
 	int directionInt = 0;
 	
@@ -14,7 +16,7 @@ public class Player : MonoBehaviour {
 	public int maxSpeed = 10;
 	public int rotationSpeed = 15;
 	public float friction = .9f;
-	
+
 	Collider2D[] enemiesInRange;
 	
 	// Use this for initialization
@@ -35,7 +37,7 @@ public class Player : MonoBehaviour {
 	}
 	
 	void FixedUpdate() {
-		bool moving = (movingX || movingY);
+		moving = (movingX || movingY);
 		
 		movingX = false;
 		movingY = false;
@@ -45,7 +47,7 @@ public class Player : MonoBehaviour {
 		if (rigidbody2D.velocity.magnitude > maxSpeed) {
 			rigidbody2D.velocity = Vector2.ClampMagnitude(rigidbody2D.velocity, maxSpeed);
 		}
-
+		rigidbody2D.velocity = Vector2.ClampMagnitude(rigidbody2D.velocity, rigidbody2D.velocity.magnitude * (1 + (cos * .6f)));
 		//friction when not moving (ie stopping force)
 		if (!moving) {
 			this.gameObject.rigidbody2D.velocity *= friction; 
@@ -56,7 +58,7 @@ public class Player : MonoBehaviour {
 	
 	void Controls() {
 	
-		#region movement
+		/*#region movement
 		//note: direction is dominated by up/down because they are later
 		
 		if (Input.GetKey (KeyCode.D)) {
@@ -93,10 +95,36 @@ public class Player : MonoBehaviour {
 		else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A)) {
 			directionInt = 5;
 		}
-		#endregion
+		#endregion*/
 //		if (Input.GetKeyDown(KeyCode.Space)) {
 //			shoot ();
 //		}
+
+		float movex = Input.GetAxis("MoveX");
+		float movey = Input.GetAxis("MoveY");
+		float aimx = Input.GetAxis("AimX");
+		float aimy = Input.GetAxis ("AimY");
+		moving = (movex != 0 || movey != 0);
+
+		if(aimx != 0 || aimy != 0)
+		{
+			cos = Mathf.Cos (Vector2.Angle(new Vector2(movex, movey), new Vector2(aimx, aimy)) * Mathf.Deg2Rad);
+			//Debug.Log (cos);
+			cos -= 1f;
+			cos /= 2;
+		}
+		else
+		{
+			cos = 0f;
+		}
+		if(moving)
+		{
+			Vector2 moveVector = new Vector2(movex, movey);
+			moveVector *= moveForce;
+			rigidbody2D.AddForce(moveVector);
+		}
+
+
 	}
 	
 	void moveSide(float multiplier) {
@@ -133,11 +161,29 @@ public class Player : MonoBehaviour {
 		//transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, direction * 45), rotationSpeed);
 		
 		//aim at mouse
-		Vector3 moz = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		Vector3 hurr = new Vector3( moz.x, moz.y, 0);
+		//Vector3 moz = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		float aimx = Input.GetAxis("AimX");
+		float aimy = Input.GetAxis ("AimY");
+		//Vector3 hurr = new Vector3( moz.x, moz.y, 0);
+		Vector3 hurr = new Vector3(this.transform.position.x + aimx, this.transform.position.y + aimy, 0);
+		if(aimx==0 && aimy==0)
+		{
+			aimx = Input.GetAxis("MoveX");
+			aimy = Input.GetAxis ("MoveY");
+			if(aimx!=0 || aimy!=0)
+			{
+				hurr = new Vector3(this.transform.position.x + aimx, this.transform.position.y + aimy, 0);
+			}
+		}
+		Debug.DrawLine(this.transform.position, hurr, Color.red);
 		float angle = Mathf.Atan2(hurr.y - transform.position.y, hurr.x - transform.position.x) * Mathf.Rad2Deg;
 		//print (hurr);
-		transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0,0,angle), rotationSpeed);
+		if(aimx!=0 || aimy!=0)
+		{
+			transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0,0,angle), rotationSpeed);
+		}
+			
+
 			
 	}
 	
