@@ -66,7 +66,7 @@ public class zombie : MonoBehaviour {
 			Debug.DrawRay(transform.position, targetLoc-transform.position, Color.green);
 			//print (target.transform.rotation.eulerAngles.z - transform.rotation.eulerAngles.z);
 			Vector2 dir = (new Vector2(Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad)).normalized);
-			if ((Vector2.Angle(target.transform.position - transform.position , dir)) <= 90 ) {
+			if ((Vector2.Angle(target.transform.position - transform.position , dir)) <= 90 ) { //in front of
 				if (hit.collider.gameObject.CompareTag("Player")) {
 					
 					targetLoc = target.transform.position;
@@ -144,11 +144,11 @@ public class zombie : MonoBehaviour {
 		if(health <= 0)
 		{
 			alive = false;
-			rigidbody2D.mass = 1f;
+			rigidbody2D.mass = Random.Range(5f, 7f);
 			//rigidbody2D.drag = .01f;
 			rigidbody2D.AddTorque(Random.Range(-900f, 900f));
-			rigidbody2D.isKinematic = true;
-			this.rigidbody2D.drag = 0;
+			//rigidbody2D.isKinematic = true;
+			//this.rigidbody2D.drag = 0;
 			//print (rigidbody2D.velocity);
 			StartCoroutine( die() );
 			

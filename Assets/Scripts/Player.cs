@@ -58,7 +58,7 @@ public class Player : MonoBehaviour {
 	
 	void Controls() {
 	
-		/*#region movement
+		#region movement
 		//note: direction is dominated by up/down because they are later
 		
 		if (Input.GetKey (KeyCode.D)) {
@@ -95,11 +95,11 @@ public class Player : MonoBehaviour {
 		else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A)) {
 			directionInt = 5;
 		}
-		#endregion*/
+		#endregion
 //		if (Input.GetKeyDown(KeyCode.Space)) {
 //			shoot ();
 //		}
-
+		/*
 		float movex = Input.GetAxis("MoveX");
 		float movey = Input.GetAxis("MoveY");
 		float aimx = Input.GetAxis("AimX");
@@ -123,7 +123,7 @@ public class Player : MonoBehaviour {
 			moveVector *= moveForce;
 			rigidbody2D.AddForce(moveVector);
 		}
-
+		*/
 
 	}
 	
@@ -161,7 +161,9 @@ public class Player : MonoBehaviour {
 		//transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, direction * 45), rotationSpeed);
 		
 		//aim at mouse
-		//Vector3 moz = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		Vector3 moz = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		Vector3 hurr = new Vector3( moz.x, moz.y, 0);
+		/*
 		float aimx = Input.GetAxis("AimX");
 		float aimy = Input.GetAxis ("AimY");
 		//Vector3 hurr = new Vector3( moz.x, moz.y, 0);
@@ -175,13 +177,14 @@ public class Player : MonoBehaviour {
 				hurr = new Vector3(this.transform.position.x + aimx, this.transform.position.y + aimy, 0);
 			}
 		}
+		*/
 		Debug.DrawLine(this.transform.position, hurr, Color.red);
 		float angle = Mathf.Atan2(hurr.y - transform.position.y, hurr.x - transform.position.x) * Mathf.Rad2Deg;
 		//print (hurr);
-		if(aimx!=0 || aimy!=0)
-		{
+		//if(aimx!=0 || aimy!=0)
+		//{
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0,0,angle), rotationSpeed);
-		}
+		//}
 			
 
 			
