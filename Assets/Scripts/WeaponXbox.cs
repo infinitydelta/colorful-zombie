@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Weapon : MonoBehaviour {
-
+public class WeaponXbox : MonoBehaviour {
+	
 	public GameObject projectile;
 	public float damage = 10;
 	public float cooldown = 1f;
@@ -38,11 +38,11 @@ public class Weapon : MonoBehaviour {
 		{
 			fired = false;
 		}
-//		print (spread);
+		//		print (spread);
 	}
 	
 	void FixedUpdate() {
-	
+		
 		if (timer >= cooldown) {
 			canShoot = true;
 			recoilRecovery();
@@ -57,19 +57,23 @@ public class Weapon : MonoBehaviour {
 	void weaponControl() {
 		if(fullauto)
 		{
-			if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) 
+			if (Input.GetAxis("Fire1") > 0) 
 			{
 				shoot ();
 			} 
 		}
 		else
 		{
-			if(Input.GetMouseButtonDown(0))
+			if(Input.GetAxis("Fire1") > 0)
 			{
-				shoot ();
+				if(!fired)
+				{
+					fired = true;
+					shoot();
+				}
 			}
 		}
-	
+		
 	}
 	
 	void shoot() {
@@ -93,14 +97,14 @@ public class Weapon : MonoBehaviour {
 			//Debug.DrawRay(transform.position , endpoint, Color.red);
 			//vel = new Vector2(-Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad) * speed, speed *Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad));
 			//RaycastHit2D hit = Physics2D.Raycast(new Vector2(position.x, position.y), new Vector2(-Mathf.Sin(rotation.eulerAngles.z * Mathf.Deg2Rad) , Mathf.Cos(rotation.eulerAngles.z * Mathf.Deg2Rad)), 50f, 1);
-//			if (hit) {
-//				print (Vector3.Magnitude( hit.transform.position - transform.position));
-//			}
+			//			if (hit) {
+			//				print (Vector3.Magnitude( hit.transform.position - transform.position));
+			//			}
 			
 			if (spread < maxRecoil) {
 				spread += recoil;
 			}
-
+			
 			Collider2D[] inRange = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y), noise);
 			foreach(Collider2D col2d in inRange)
 			{
@@ -109,7 +113,7 @@ public class Weapon : MonoBehaviour {
 					col2d.gameObject.GetComponent<zombie>().setTargetLoc(this.transform.position);
 				}
 			}
-
+			
 			canShoot = false;
 			timer = 0;
 		}

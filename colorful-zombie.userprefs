@@ -1,11 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\zombie.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CameraScript2.cs">
     <Files>
-      <File FileName="colorful-zombie.sln" Line="46" Column="1" />
-      <File FileName="Assets\Scripts\zombie.cs" Line="147" Column="41" />
-      <File FileName="Assets\Scripts\Player.cs" Line="187" Column="5" />
+      <File FileName="Assets\Scripts\PlayerLookatMouse.cs" Line="1" Column="1" />
+      <File FileName="colorful-zombie.sln" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\zombie.cs" Line="21" Column="22" />
+      <File FileName="Assets\Scripts\Player.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\PlayerXbox.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Weapon.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\WeaponXbox.cs" Line="71" Column="2" />
+      <File FileName="Assets\Scripts\CameraScript2.cs" Line="58" Column="33" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -115,6 +115,7 @@
      <Compile Include="Assets\AstarPathfindingProject\Utilities\UnityReferenceHelper.cs" />
      <Compile Include="Assets\AstarPathfindingProject\changelog.cs" />
      <Compile Include="Assets\Scripts\CameraScript.cs" />
+     <Compile Include="Assets\Scripts\CameraScript2.cs" />
      <Compile Include="Assets\Scripts\DestroyAfterTime.cs" />
      <Compile Include="Assets\Scripts\ParticleSystem.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
@@ -123,6 +124,7 @@
      <Compile Include="Assets\Scripts\Projectile.cs" />
      <Compile Include="Assets\Scripts\Weapon.cs" />
      <Compile Include="Assets\Scripts\WeaponMelee.cs" />
+     <Compile Include="Assets\Scripts\WeaponXbox.cs" />
      <Compile Include="Assets\Scripts\zombie.cs" />
      <None Include="Assets\AstarPathfindingProject\Editor\EditorAssets\Materials\Navmesh2.shader" />
      <None Include="Assets\AstarPathfindingProject\Plugins\DotNetZip\License.txt" />
