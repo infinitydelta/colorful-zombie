@@ -4,6 +4,7 @@ using Pathfinding;
 
 public class zombie : MonoBehaviour {
 
+	public GameObject[] targets;
 	public GameObject target;
 	public float maxSpeed;
 	float detectableRange = 20;
@@ -26,11 +27,17 @@ public class zombie : MonoBehaviour {
 		targetLoc = this.transform.position;
 		anim = GetComponent<Animator>();
 		//seeker.StartPath(transform.position, target.transform.position, OnPathComplete); //set path to target
-
+		targets = GameObject.FindGameObjectsWithTag ("Player");
+		target = targets[0];
 		
 	}
 	void Update() {
-	
+		foreach (GameObject t in targets) {
+			if (Vector2.Distance(t.transform.position, transform.position) < Vector2.Distance(target.transform.position, transform.position)) {
+				target = t;
+			}
+		
+		}
 	
 	}
 	// Update is called once per frame
