@@ -16,11 +16,18 @@ public class Player : MonoBehaviour {
 	public int maxSpeed = 10;
 	public int rotationSpeed = 15;
 	public float friction = .9f;
-	
+
 	
 	public bool grabbing = false;
 	public bool xbox = false;
-	
+
+	public GameObject ammoCounter;
+	private AmmoCounter ac;
+	public GameObject hpbar;
+	private PlayerHPBar hpb;
+
+	public int health = 100;
+
 	Transform currentWeapon;
 	Collider2D[] enemiesInRange;
 	
@@ -36,6 +43,12 @@ public class Player : MonoBehaviour {
 			}
 			//currentWeapon = 
 		}
+		ac = ammoCounter.GetComponent<AmmoCounter>();
+		ac.newWeapon(currentWeapon.GetComponent<Weapon>());
+		hpb = hpbar.GetComponent<PlayerHPBar>();
+		hpb.max = health;
+		hpb.current = hpb.max;
+		hpb.setHP (health);
 	}
 	
 	// Update is called once per frame
@@ -144,7 +157,10 @@ public class Player : MonoBehaviour {
 			{
 				if (Input.GetAxis("Fire1") > 0) 
 				{
-					currentWeapon.GetComponent<Weapon>().shoot ();
+					if(currentWeapon.GetComponent<Weapon>().shoot ())
+					{
+						ac.fire ();
+					}
 				} 
 			}
 			else
@@ -154,13 +170,20 @@ public class Player : MonoBehaviour {
 					if(!currentWeapon.GetComponent<Weapon>().fired)
 					{
 						currentWeapon.GetComponent<Weapon>().fired = true;
-						currentWeapon.GetComponent<Weapon>().shoot();
-					}
+						if(currentWeapon.GetComponent<Weapon>().shoot ())
+						{
+							ac.fire ();
+						}					}
+				}
+				else if(Input.GetAxis ("Fire1")==0)
+				{
+					currentWeapon.GetComponent<Weapon>().fired = false;
 				}
 			}
 			
 			if (Input.GetButtonDown("Reload")) {
-				currentWeapon.GetComponent<Weapon>().reload ();				
+				//currentWeapon.GetComponent<Weapon>().reload();
+				ac.reload();
 			}
 		}
 		
@@ -170,19 +193,26 @@ public class Player : MonoBehaviour {
 			{
 				if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) 
 				{
-					currentWeapon.GetComponent<Weapon>().shoot ();
+					if(currentWeapon.GetComponent<Weapon>().shoot ())
+					{
+						ac.fire ();
+					}				
 				} 
 			}
 			else
 			{
 				if(Input.GetMouseButtonDown(0))
 				{
-					currentWeapon.GetComponent<Weapon>().shoot ();
+					if(currentWeapon.GetComponent<Weapon>().shoot ())
+					{
+						ac.fire ();
+					}				
 				}
 			}
 			
 			if (Input.GetKeyDown(KeyCode.R)) {
-				currentWeapon.GetComponent<Weapon>().reload ();
+				//currentWeapon.GetComponent<Weapon>().reload ();
+				ac.reload();
 			}
 		}
 	}
@@ -328,6 +358,7 @@ public class Player : MonoBehaviour {
 		
 		
 		currentWeapon = item.transform;
+		ac.newWeapon(currentWeapon.GetComponent<Weapon>());
 		//Destroy(item.GetComponent<Item>());
 		
 	}
@@ -337,6 +368,8 @@ public class Player : MonoBehaviour {
 	void OnCollisionEnter2D (Collision2D other) {
 		if (other.gameObject.CompareTag("enemy")) {
 			print ("take damage");
+			health--;
+			hpb.setHP(health);
 		}
 	}
 	

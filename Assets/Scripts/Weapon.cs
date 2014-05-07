@@ -19,8 +19,10 @@ public class Weapon : MonoBehaviour {
 	public float cameraRecoilAmount = .2f;
 	public int magSize = 30;
 	public int currentMag;
+	public float reloadTime;
 	public bool fullauto = true;
 	public bool fired;
+	public bool reloading;
 	
 	float spread;
 	bool canShoot = true;
@@ -79,8 +81,8 @@ public class Weapon : MonoBehaviour {
 	
 	}
 	
-	public void shoot() {
-		if (canShoot && currentMag > 0) {
+	public bool shoot() {
+		if (canShoot && currentMag > 0 && !reloading) {
 		
 		
 			Vector3 position = new Vector3(transform.position.x,transform.position.y,transform.position.z +1);
@@ -115,11 +117,14 @@ public class Weapon : MonoBehaviour {
 			currentMag--;
 			canShoot = false;
 			timer = 0;
+			return true;
 		}
+		return false;
 	}
 	
 	public void reload() {
 		currentMag = magSize;
+		reloading = false;
 	}
 	
 	void recoilRecovery() {

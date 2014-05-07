@@ -16,6 +16,7 @@ public class zombie : MonoBehaviour {
 
 	Animator anim;
 	public float health = 100;
+	bool attacking = false;
 	
 
 	Vector3 targetLoc;
@@ -86,7 +87,14 @@ public class zombie : MonoBehaviour {
 					//InvokeRepeating("findPath",10,10);
 				}
 			}
-			attackTarget(targetLoc);
+			if(Vector2.Distance(target.transform.position, transform.position) < 1.4f)
+			{
+				attackTarget(target);
+			}
+			else
+			{
+				moveTo(targetLoc);
+			}
 			
 		}
 		if (!moving) {
@@ -132,11 +140,21 @@ public class zombie : MonoBehaviour {
 		return false;
 	}
 	
-	void attackTarget(Vector3 target) {
+	void moveTo(Vector3 target) {
 		moving = true;
 		faceDirection(target);
-		if (Vector2.Distance(target, transform.position) > 1f && rigidbody2D.velocity.magnitude < maxSpeed) {
+		if (Vector2.Distance(target, transform.position) > .2f && rigidbody2D.velocity.magnitude < maxSpeed) {
 			rigidbody2D.AddForce((target - transform.position).normalized * 3000);
+		}
+	}
+	void attackTarget(GameObject t)
+	{
+		faceDirection(t.transform.position);
+		Debug.Log ("attack targer pls");
+		if(!attacking)
+		{
+			attacking = true;
+			anim.SetTrigger("Attack");
 		}
 	}
 	
@@ -173,5 +191,9 @@ public class zombie : MonoBehaviour {
 		anim.SetTrigger("dead");
 		Destroy(this.gameObject, 5f);
 
+	}
+	public void endAttack()
+	{
+		attacking = false;
 	}
 }

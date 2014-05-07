@@ -25,7 +25,7 @@ public class Item : MonoBehaviour {
 			gui.guiText.enabled = true;
 			
 			if ( nearPlayer.grabbing) {
-				print ("update grab");
+				//print ("update grab");
 				nearPlayer.grabObject(gameObject);
 				gui.guiText.enabled = false;
 				nearPlayer.grabbing = false;
