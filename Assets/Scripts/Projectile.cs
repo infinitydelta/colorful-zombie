@@ -54,7 +54,9 @@ public class Projectile : MonoBehaviour {
 		else if(other.gameObject.CompareTag("enemy"))
 		{
 			other.gameObject.GetComponent<zombie>().damage(damage);
-			Instantiate(blood, other.contacts[0].point, this.transform.rotation);
+			GameObject bloodz = (GameObject) Instantiate(blood, other.contacts[0].point, Quaternion.identity);
+			float angle = Mathf.Rad2Deg* Mathf.Atan2(vel.y, vel.x);
+			bloodz.transform.rotation = Quaternion.Euler( angle, 90, 0);
 			//other.gameObject.rigidbody2D.velocity = rigidbody2D.velocity * .5f;
 		}
 		

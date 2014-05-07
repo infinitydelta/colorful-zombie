@@ -162,6 +162,8 @@ public class PlayerXbox : MonoBehaviour {
 		
 		//aim at mouse
 		//Vector3 moz = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		
+		
 		float aimx = Input.GetAxis("AimX");
 		float aimy = Input.GetAxis ("AimY");
 		//Vector3 hurr = new Vector3( moz.x, moz.y, 0);

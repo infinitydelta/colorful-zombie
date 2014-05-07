@@ -135,7 +135,7 @@ public class zombie : MonoBehaviour {
 	void attackTarget(Vector3 target) {
 		moving = true;
 		faceDirection(target);
-		if (Vector2.Distance(target, transform.position) > .10f && rigidbody2D.velocity.magnitude < maxSpeed) {
+		if (Vector2.Distance(target, transform.position) > 1f && rigidbody2D.velocity.magnitude < maxSpeed) {
 			rigidbody2D.AddForce((target - transform.position).normalized * 3000);
 		}
 	}
@@ -151,6 +151,7 @@ public class zombie : MonoBehaviour {
 	public void damage(float dmg)
 	{
 		health -= dmg;
+		
 		if(health <= 0)
 		{
 			alive = false;
@@ -170,7 +171,7 @@ public class zombie : MonoBehaviour {
 		rigidbody2D.isKinematic = true;
 		this.GetComponent<CircleCollider2D>().enabled = false;
 		anim.SetTrigger("dead");
-		Destroy(this.gameObject, 1.5f);
+		Destroy(this.gameObject, 5f);
 
 	}
 }

@@ -9,14 +9,14 @@ public class Weapon : MonoBehaviour {
 	public float accuracy = 5;
 	public float recoil = 1;
 	public int maxRecoil = 20;
-	public float recoilRecoveryTime = .3f;
+	public float recoilRecoveryTime = .15f;
 	public float recoilRecoverySpeed = .3f;
 	public float cameraRecoil = 25f;
 	public int numProjectiles = 20;
 	public int knockback = 1;
 	public int noise = 7;
 	public bool fullauto = true;
-	private bool fired;
+	public bool fired;
 	float spread;
 	bool canShoot = true;
 	float timer;
@@ -30,7 +30,7 @@ public class Weapon : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		weaponControl();
+		//weaponControl();
 		float r = 5;
 		Vector3 endpoint = new Vector3(r*Mathf.Cos((transform.rotation.eulerAngles.z + 90)* Mathf.Deg2Rad), r*Mathf.Sin((transform.rotation.eulerAngles.z + 90) * Mathf.Deg2Rad), 0);
 		Debug.DrawRay(transform.position + endpoint.normalized*.1f, endpoint );
@@ -72,7 +72,7 @@ public class Weapon : MonoBehaviour {
 	
 	}
 	
-	void shoot() {
+	public void shoot() {
 		if (canShoot) {
 			Vector3 position = new Vector3(transform.position.x,transform.position.y,transform.position.z +1);
 			for (int i = 0; i< numProjectiles;i++ ) {
