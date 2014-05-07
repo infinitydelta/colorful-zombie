@@ -158,9 +158,14 @@ public class Player : MonoBehaviour {
 					}
 				}
 			}
+			
+			if (Input.GetButtonDown("Reload")) {
+				currentWeapon.GetComponent<Weapon>().reload ();				
+			}
 		}
 		
 		else {
+			//fire
 			if(currentWeapon.GetComponent<Weapon>().fullauto)
 			{
 				if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) 
@@ -174,6 +179,10 @@ public class Player : MonoBehaviour {
 				{
 					currentWeapon.GetComponent<Weapon>().shoot ();
 				}
+			}
+			
+			if (Input.GetKeyDown(KeyCode.R)) {
+				currentWeapon.GetComponent<Weapon>().reload ();
 			}
 		}
 	}

@@ -13,6 +13,15 @@ public class CameraScript2 : MonoBehaviour {
 	private Vector3 targetPosition;
 	private float xTargetSize;
 	private float yTargetSize;
+	
+	// How long the object should shake for.
+	public float shake = 0f;
+	
+	// Amplitude of the shake. A larger value shakes the camera harder.
+	public float shakeAmount = 0.3f;
+	public float decreaseFactor = 1.0f;
+	Vector3 originalPos;
+	
 	// Use this for initialization
 	void Start () {
 		//myPlayers = GameObject.FindGameObjectsWithTag ("Player");
@@ -22,6 +31,21 @@ public class CameraScript2 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		myPlayers = GameObject.FindGameObjectsWithTag ("Player");
+		
+		if (shake > 0)
+		{
+			//
+			transform.position = originalPos + Random.insideUnitSphere * shakeAmount;
+			
+			shake -= Time.deltaTime * decreaseFactor;
+		}
+		else
+		{
+			shake = 0f;
+			originalPos = transform.position;
+			//transform.position = originalPos;
+		}
+		
 		
 		//center on multiple players
 		float leftmostPos = myPlayers[0].transform.position.x;
@@ -58,5 +82,7 @@ public class CameraScript2 : MonoBehaviour {
 			camera.orthographicSize += (yTargetSize - camera.orthographicSize) / easeAmount;
 		targetPosition = new Vector3(xsum / myPlayers.Length, (ysum / myPlayers.Length), -10f);
 		transform.position += (targetPosition - transform.position) / easeAmount;
+		
+		
 	}
 }

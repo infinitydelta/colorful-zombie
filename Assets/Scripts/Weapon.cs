@@ -11,12 +11,17 @@ public class Weapon : MonoBehaviour {
 	public int maxRecoil = 20;
 	public float recoilRecoveryTime = .15f;
 	public float recoilRecoverySpeed = .3f;
-	public float cameraRecoil = 25f;
+	//public float cameraRecoil = 25f;
 	public int numProjectiles = 20;
 	public int knockback = 1;
 	public int noise = 7;
+	public float cameraRecoil = .1f;
+	public float cameraRecoilAmount = .2f;
+	public int magSize = 30;
+	public int currentMag;
 	public bool fullauto = true;
 	public bool fired;
+	
 	float spread;
 	bool canShoot = true;
 	float timer;
@@ -25,6 +30,8 @@ public class Weapon : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		timer = cooldown;
+		currentMag = magSize;
 		spread = accuracy;
 	}
 	
@@ -73,7 +80,9 @@ public class Weapon : MonoBehaviour {
 	}
 	
 	public void shoot() {
-		if (canShoot) {
+		if (canShoot && currentMag > 0) {
+		
+		
 			Vector3 position = new Vector3(transform.position.x,transform.position.y,transform.position.z +1);
 			for (int i = 0; i< numProjectiles;i++ ) {
 				Quaternion rotation = transform.rotation * Quaternion.Euler(0,0,Random.Range(-spread,spread));
@@ -86,17 +95,10 @@ public class Weapon : MonoBehaviour {
 			
 			RaycastHit2D hit = Physics2D.Raycast(transform.position + endpoint.normalized*.1f, endpoint, 50);
 			
-			Camera.main.transform.Translate(Random.insideUnitCircle * cameraRecoil * Time.deltaTime,0);
-			
-			//if (hit) print ("shoot: " + hit.collider.gameObject);
-			
-			//Debug.DrawRay(transform.position , endpoint, Color.red);
-			//vel = new Vector2(-Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad) * speed, speed *Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad));
-			//RaycastHit2D hit = Physics2D.Raycast(new Vector2(position.x, position.y), new Vector2(-Mathf.Sin(rotation.eulerAngles.z * Mathf.Deg2Rad) , Mathf.Cos(rotation.eulerAngles.z * Mathf.Deg2Rad)), 50f, 1);
-//			if (hit) {
-//				print (Vector3.Magnitude( hit.transform.position - transform.position));
-//			}
-			
+			//Camera.main.transform.Translate(Random.insideUnitCircle * cameraRecoil * Time.deltaTime,0);
+			Camera.main.GetComponent<CameraScript2>().shakeAmount = cameraRecoilAmount;
+			Camera.main.GetComponent<CameraScript2>().shake = cameraRecoil;
+
 			if (spread < maxRecoil) {
 				spread += recoil;
 			}
@@ -109,10 +111,15 @@ public class Weapon : MonoBehaviour {
 					col2d.gameObject.GetComponent<zombie>().setTargetLoc(this.transform.position);
 				}
 			}
-
+			
+			currentMag--;
 			canShoot = false;
 			timer = 0;
 		}
+	}
+	
+	public void reload() {
+		currentMag = magSize;
 	}
 	
 	void recoilRecovery() {
