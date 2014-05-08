@@ -38,6 +38,7 @@ public class AmmoCounter : MonoBehaviour
 		}
 	
 	}
+	
 	public void reload()
 	{
 		if(!reloading)
@@ -72,6 +73,7 @@ public class AmmoCounter : MonoBehaviour
 		cpb.currentValue = wep.currentMag;
 		cpb.updateRotations();
 		reloading = false;
+		weapon.reloading = false;
 		if(cpb.currentValue <= 0)
 		{
 			reload();

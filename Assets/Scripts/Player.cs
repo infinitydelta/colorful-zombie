@@ -26,7 +26,8 @@ public class Player : MonoBehaviour {
 	public GameObject hpbar;
 	private PlayerHPBar hpb;
 
-	public int health = 100;
+	public int maxHealth = 100;
+	public float health = 100;
 
 	Transform currentWeapon;
 	Collider2D[] enemiesInRange;
@@ -56,6 +57,7 @@ public class Player : MonoBehaviour {
 		faceDirection(directionInt);
 		checkGrabbing();
 		weaponControl();
+		regenHP();
 	}
 	
 	void FixedUpdate() {
@@ -103,7 +105,11 @@ public class Player : MonoBehaviour {
 				directionInt = 6;
 			}
 			
-	
+			//cos = Mathf.Cos(Vector2.Angle(rigidbody2D.velocity, new Vector2(1, Mathf.Tan(transform.eulerAngles.z) )) * Mathf.Deg2Rad);
+			
+			//print (Mathf.Tan(transform.eulerAngles.z));
+			//cos -= 1f;
+			//cos/= 2;
 			
 			//diagonal direction keys
 			
@@ -363,14 +369,29 @@ public class Player : MonoBehaviour {
 		
 	}
 	
-	
+	void regenHP() {
+		if (health < maxHealth) {
+			health += Time.deltaTime /5f;
+			hpb.setHP(health);
+		}
+	}
 	
 	void OnCollisionEnter2D (Collision2D other) {
 		if (other.gameObject.CompareTag("enemy")) {
 			print ("take damage");
-			health--;
+			health-=2;
+			if (health <= 0) {
+				health = 0;
+				death ();
+			}
 			hpb.setHP(health);
 		}
+	}
+	
+
+	
+	void death() {
+		Destroy (gameObject);
 	}
 	
 }

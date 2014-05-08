@@ -33,11 +33,19 @@ public class zombie : MonoBehaviour {
 		
 	}
 	void Update() {
+		targets = GameObject.FindGameObjectsWithTag ("Player");
+		if (targets.Length == 0) {
+			this.enabled = false;
+		}
 		foreach (GameObject t in targets) {
-			if (Vector2.Distance(t.transform.position, transform.position) < Vector2.Distance(target.transform.position, transform.position)) {
-				target = t;
+			if (t != null) {
+				if (target == null) {
+					target = t;
+				}
+				if (Vector2.Distance(t.transform.position, transform.position) < Vector2.Distance(target.transform.position, transform.position)) {
+					target = t;
+				}
 			}
-		
 		}
 	
 	}
@@ -150,7 +158,6 @@ public class zombie : MonoBehaviour {
 	void attackTarget(GameObject t)
 	{
 		faceDirection(t.transform.position);
-		Debug.Log ("attack targer pls");
 		if(!attacking)
 		{
 			attacking = true;
@@ -181,14 +188,17 @@ public class zombie : MonoBehaviour {
 			//print (rigidbody2D.velocity);
 			StartCoroutine( die() );
 			
+			transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
 		}
 	}
 	public IEnumerator die()
 	{
 		yield return new WaitForSeconds(.5f);
 		rigidbody2D.isKinematic = true;
-		this.GetComponent<CircleCollider2D>().enabled = false;
-		anim.SetTrigger("dead");
+		transform.GetChild(0).GetComponent<CircleCollider2D>().enabled = false;
+		//transform.GetComponentInChildren<CircleCollider2D>().enabled = false;
+		//this.GetComponent<CircleCollider2D>().enabled = false;
+		anim.SetTrigger("Death");
 		Destroy(this.gameObject, 5f);
 
 	}

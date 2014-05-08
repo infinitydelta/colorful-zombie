@@ -31,7 +31,12 @@ public class CameraScript2 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		myPlayers = GameObject.FindGameObjectsWithTag ("Player");
-		
+		if (myPlayers.Length == 0) {
+			transform.GetChild(0).position = new Vector3(.5f, .5f, 10);
+			transform.GetChild(0).guiText.enabled = true;
+			Destroy(this);
+			return;
+		}
 		if (shake > 0)
 		{
 			//

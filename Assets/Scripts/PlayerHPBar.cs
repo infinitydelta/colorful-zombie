@@ -11,8 +11,8 @@ public class PlayerHPBar : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		redbar = transform.GetChild(3);
-		yellowbar = transform.GetChild (9);
+		redbar = transform.FindChild("redbar");
+		yellowbar = transform.FindChild("yellowbar");
 	}
 	
 	// Update is called once per frame

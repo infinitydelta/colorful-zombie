@@ -11,7 +11,6 @@ public class Weapon : MonoBehaviour {
 	public int maxRecoil = 20;
 	public float recoilRecoveryTime = .15f;
 	public float recoilRecoverySpeed = .3f;
-	//public float cameraRecoil = 25f;
 	public int numProjectiles = 20;
 	public int knockback = 1;
 	public int noise = 7;
@@ -35,11 +34,11 @@ public class Weapon : MonoBehaviour {
 		timer = cooldown;
 		currentMag = magSize;
 		spread = accuracy;
+		transform.FindChild("GUI Text").guiText.enabled =false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		//weaponControl();
 		float r = 5;
 		Vector3 endpoint = new Vector3(r*Mathf.Cos((transform.rotation.eulerAngles.z + 90)* Mathf.Deg2Rad), r*Mathf.Sin((transform.rotation.eulerAngles.z + 90) * Mathf.Deg2Rad), 0);
 		Debug.DrawRay(transform.position + endpoint.normalized*.1f, endpoint );
@@ -47,7 +46,6 @@ public class Weapon : MonoBehaviour {
 		{
 			fired = false;
 		}
-//		print (spread);
 	}
 	
 	void FixedUpdate() {
@@ -82,9 +80,12 @@ public class Weapon : MonoBehaviour {
 	}
 	
 	public bool shoot() {
+	
 		if (canShoot && currentMag > 0 && !reloading) {
-		
-		
+		//if (!audio.isPlaying) {
+			audio.Play();
+			currentMag--;
+		//}
 			Vector3 position = new Vector3(transform.position.x,transform.position.y,transform.position.z +1);
 			for (int i = 0; i< numProjectiles;i++ ) {
 				Quaternion rotation = transform.rotation * Quaternion.Euler(0,0,Random.Range(-spread,spread));
@@ -104,17 +105,20 @@ public class Weapon : MonoBehaviour {
 			if (spread < maxRecoil) {
 				spread += recoil;
 			}
-
+			
+			//aggro zombies
+			
 			Collider2D[] inRange = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y), noise);
 			foreach(Collider2D col2d in inRange)
 			{
 				if(col2d.CompareTag("enemy"))
 				{
-					col2d.gameObject.GetComponent<zombie>().setTargetLoc(this.transform.position);
+					if (col2d.gameObject.GetComponent<zombie>() != null) {
+						col2d.gameObject.GetComponent<zombie>().setTargetLoc(this.transform.position);
+					}
 				}
 			}
-			
-			currentMag--;
+
 			canShoot = false;
 			timer = 0;
 			return true;
