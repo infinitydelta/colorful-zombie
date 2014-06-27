@@ -1,0 +1,13 @@
+D:\documents\GitHub\colorful-zombie\Temp\bin\Debug\Assembly-CSharp.dll
+D:\documents\GitHub\colorful-zombie\Temp\bin\Debug\Assembly-CSharp.pdb
+D:\documents\GitHub\colorful-zombie\Temp\bin\Debug\Pathfinding.Ionic.Zip.Reduced.dll
+D:\documents\GitHub\colorful-zombie\Temp\bin\Debug\Pathfinding.JsonFx.dll
+D:\documents\GitHub\colorful-zombie\Temp\bin\Debug\UnityEditor.dll
+D:\documents\GitHub\colorful-zombie\Temp\bin\Debug\UnityEngine.dll
+D:\documents\GitHub\colorful-zombie\Temp\bin\Debug\Mono.Cecil.dll
+D:\documents\GitHub\colorful-zombie\Temp\bin\Debug\nunit.framework.dll
+D:\documents\GitHub\colorful-zombie\Temp\bin\Debug\Unity.DataContract.dll
+D:\documents\GitHub\colorful-zombie\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+D:\documents\GitHub\colorful-zombie\obj\Debug\Assembly-CSharp-vs.csprojResolveAssemblyReference.cache
+D:\documents\GitHub\colorful-zombie\obj\Debug\Assembly-CSharp.dll
+D:\documents\GitHub\colorful-zombie\obj\Debug\Assembly-CSharp.pdb

@@ -12,9 +12,9 @@ public class Player : MonoBehaviour {
 	
 	public GameObject arrow;
 	public GameObject projectile;
-	public int moveForce = 80;
+	public int moveForce = 500000;
 	public int maxSpeed = 10;
-	public int rotationSpeed = 15;
+	public int rotationSpeed = 500;
 	public float friction = .9f;
 
 	
@@ -58,26 +58,32 @@ public class Player : MonoBehaviour {
 		checkGrabbing();
 		weaponControl();
 		regenHP();
+
+        //movement
+        moving = (movingX || movingY);
+
+        movingX = false;
+        movingY = false;
+        Controls();
+        if (rigidbody2D.velocity.magnitude > maxSpeed)
+        {
+            rigidbody2D.velocity = Vector2.ClampMagnitude(rigidbody2D.velocity, maxSpeed);
+        }
+
 	}
 	
 	void FixedUpdate() {
-		moving = (movingX || movingY);
-		
-		movingX = false;
-		movingY = false;
-		Controls ();
+
 		
 		//controls max speed
-		if (rigidbody2D.velocity.magnitude > maxSpeed) {
-			rigidbody2D.velocity = Vector2.ClampMagnitude(rigidbody2D.velocity, maxSpeed);
-		}
-		rigidbody2D.velocity = Vector2.ClampMagnitude(rigidbody2D.velocity, rigidbody2D.velocity.magnitude * (1 + (cos * .6f)));
-		//friction when not moving (ie stopping force)
-		if (!moving) {
-			this.gameObject.rigidbody2D.velocity *= friction; 
 
-		}
-		
+		//rigidbody2D.velocity = Vector2.ClampMagnitude(rigidbody2D.velocity, rigidbody2D.velocity.magnitude * (1 + (cos * .6f)));
+		//friction when not moving (ie stopping force)
+
+        if (!moving)
+        {
+            this.gameObject.rigidbody2D.velocity *= (friction);
+        }
 	}
 	
 	void Controls() {
@@ -104,6 +110,22 @@ public class Player : MonoBehaviour {
 				moveVertical(-1);
 				directionInt = 6;
 			}
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (Time.timeScale == 1)
+                {
+                    Time.timeScale = .1f;
+                    Time.fixedDeltaTime = .01666667f * Time.timeScale;
+                    //rigidbody2D.interpolation = RigidbodyInterpolation2D.Interpolate;
+                }
+                else
+                {
+                    Time.timeScale = 1;
+                    Time.fixedDeltaTime = 1 / 60f;
+                  
+                }
+            }
 			
 			//cos = Mathf.Cos(Vector2.Angle(rigidbody2D.velocity, new Vector2(1, Mathf.Tan(transform.eulerAngles.z) )) * Mathf.Deg2Rad);
 			
@@ -249,11 +271,11 @@ public class Player : MonoBehaviour {
 	void moveSide(float multiplier) {
 	
 		if (movingY) {
-			rigidbody2D.AddForce (new Vector2 (multiplier * moveForce / diag, 0));
+			rigidbody2D.AddForce (new Vector2 (multiplier * moveForce * Time.deltaTime / diag, 0));
 			direction = new Vector2(multiplier,direction.y);
 			
 		} else {
-			rigidbody2D.AddForce (new Vector2 (multiplier * moveForce, 0));			
+            rigidbody2D.AddForce(new Vector2(multiplier * moveForce * Time.deltaTime, 0));			
 			direction = new Vector2(multiplier, 0);
 			
 			}		
@@ -263,12 +285,12 @@ public class Player : MonoBehaviour {
 	void moveVertical(float multiplier) {
 		
 		if (movingX) {
-			rigidbody2D.AddForce (new Vector2 (0, multiplier * moveForce / diag));
+            rigidbody2D.AddForce(new Vector2(0, multiplier * moveForce * Time.deltaTime / diag));
 			direction = new Vector2(direction.x, multiplier);
 			
 			
 		} else {
-			rigidbody2D.AddForce (new Vector2 (0, multiplier * moveForce));			
+            rigidbody2D.AddForce(new Vector2(0, multiplier * moveForce * Time.deltaTime));			
 			direction = new Vector2(0, multiplier);
 			
 			}
@@ -283,7 +305,7 @@ public class Player : MonoBehaviour {
 			Vector3 moz = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			hurr = new Vector3( moz.x, moz.y, 0);
 			float angle = Mathf.Atan2(hurr.y - transform.position.y, hurr.x - transform.position.x) * Mathf.Rad2Deg;
-			transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0,0,angle), rotationSpeed);
+			transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0,0,angle), rotationSpeed * Time.deltaTime);
 			
 		}
 		
@@ -306,7 +328,7 @@ public class Player : MonoBehaviour {
 			
 			if(aimx!=0 || aimy!=0)
 			{
-				transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0,0,angle), rotationSpeed);
+				transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0,0,angle), rotationSpeed * Time.deltaTime);
 			}
 		}
 		Debug.DrawLine(this.transform.position, hurr, Color.red);

@@ -29,26 +29,28 @@ public class CameraScript2 : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		myPlayers = GameObject.FindGameObjectsWithTag ("Player");
+        /*//death gui
 		if (myPlayers.Length == 0) {
 			transform.GetChild(0).position = new Vector3(.5f, .5f, 10);
 			transform.GetChild(0).guiText.enabled = true;
 			Destroy(this);
 			return;
-		}
+		}*/
+        
+        //muh camera shake
 		if (shake > 0)
 		{
 			//
 			transform.position = originalPos + Random.insideUnitSphere * shakeAmount;
 			
-			shake -= Time.deltaTime * decreaseFactor;
+			shake -= Time.fixedDeltaTime * decreaseFactor;
 		}
 		else
 		{
 			shake = 0f;
 			originalPos = transform.position;
-			//transform.position = originalPos;
 		}
 		
 		
@@ -85,9 +87,11 @@ public class CameraScript2 : MonoBehaviour {
 			camera.orthographicSize += (xTargetSize - camera.orthographicSize) / easeAmount;
 		else
 			camera.orthographicSize += (yTargetSize - camera.orthographicSize) / easeAmount;
+
+        
 		targetPosition = new Vector3(xsum / myPlayers.Length, (ysum / myPlayers.Length), -10f);
 		transform.position += (targetPosition - transform.position) / easeAmount;
-		
+        originalPos = transform.position;
 		
 	}
 }

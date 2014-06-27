@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Projectile : MonoBehaviour {
-	public float speed = 10;
+	public float speed = 100;
 	public GameObject boom;
 	public GameObject blood;
 	
@@ -17,17 +17,17 @@ public class Projectile : MonoBehaviour {
 		vel = new Vector2(-Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad) * speed, speed * Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad));
 		hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.up, 50f, 1);
 		//rigidbody2D.AddForce(vel * 300);
-		//rigidbody2D.velocity = vel * 4;
+		rigidbody2D.velocity = vel *1000000000000;
 		Destroy(this.gameObject, 1);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		//transform.Translate(Vector2.up) * Time.delt
-		if (moving) {
+        //transform.Translate(new Vector2(Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad) * Time.deltaTime, Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad) * Time.deltaTime));
+		/*if (moving) {
 			
 			rigidbody2D.velocity = vel * Time.deltaTime * 900;
-		}
+		} */
 	}
 	
 	void FixedUpdate() {

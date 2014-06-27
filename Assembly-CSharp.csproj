@@ -117,6 +117,7 @@
      <Compile Include="Assets\Scripts\AmmoCounter.cs" />
      <Compile Include="Assets\Scripts\CameraScript.cs" />
      <Compile Include="Assets\Scripts\CameraScript2.cs" />
+     <Compile Include="Assets\Scripts\CameraScript3_fix.cs" />
      <Compile Include="Assets\Scripts\CircularProgressBar.cs" />
      <Compile Include="Assets\Scripts\DestroyAfterTime.cs" />
      <Compile Include="Assets\Scripts\GUIScale.cs" />
@@ -132,6 +133,7 @@
      <Compile Include="Assets\Scripts\WeaponMelee.cs" />
      <Compile Include="Assets\Scripts\WeaponXbox.cs" />
      <Compile Include="Assets\Scripts\ZombieSpawner.cs" />
+     <Compile Include="Assets\Scripts\dungeon.cs" />
      <Compile Include="Assets\Scripts\zombie.cs" />
      <Compile Include="Assets\Scripts\zombieBoss.cs" />
      <None Include="Assets\AstarPathfindingProject\Editor\EditorAssets\Materials\Navmesh2.shader" />
